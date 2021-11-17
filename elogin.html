@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Animal Adoption System</title>
+	<link rel="stylesheet" type="text/css" href="stylelogin.css">
+</head>
+
+<body>
+	<header>
+		<nav>
+			<h1>Animal Adoption System</h1>
+			<ul id="navli">
+				<li><a class="homeblack" href="index.html">HOME</a></li>
+				<li><a class="homered" href="elogin.html">Account Login</a></li>
+				<li><a class="homeblack" href="elogin2.html">Lost & Found</a></li>
+				<li><a class="homeblack" href="alogin.html">Admin Login</a></li>
+
+			</ul>
+		</nav>
+	</header>
+	<div class="divider"></div>
+	<!-- 
+	<div class="loginbox">
+    <img src="assets/avatar.png" class="avatar">
+        <h1>Login Here</h1>
+        <form action="process/eprocess.php" method="POST">
+            <p>Email</p>
+            <input type="text" id="mailuid" name="mailuid" placeholder="Enter Email Address" required="required">
+            <p>Password</p>
+            <input type="password" id="pwd" name="pwd" placeholder="Enter Password" required="required">
+            <input type="submit" name="login-submit" value="Login">
+           
+        </form>
+        
+    </div> -->
+
+	<div class="loginbox">
+		<img src="assets/avatar.png" class="avatar">
+		<h1>Login Here</h1>
+		<form class="form" id="loginForm">
+			<p>Email</p>
+			<input type="text" id="mailuid" name="mailuid" placeholder="Enter Email Address" required="required">
+			<p>Password</p>
+			<input type="password" id="pwd" name="pwd" placeholder="Enter Password" required="required">
+			<input type="submit" name="login-submit" value="Login">
+
+		</form>
+
+		<br>
+		<br>
+		<p>New User?</p>
+		<a href="eregister.html"> Sign Up</a>
+
+	</div>
+
+
+</body>
+
+
+<script type="text/javascript">
+	// * 6a657373696b61795048 * //
+	//FETCH API METHOD
+
+	const loginForm = document.getElementById('loginForm');
+
+	loginForm.addEventListener('submit', function (e) {
+		e.preventDefault();
+
+		let mEmail = document.getElementById("mailuid").value
+		let mPassword = document.getElementById("pwd").value
+
+		fetch('http://localhost/app_connection/app-connection-p2p/development/crud/login.php', {
+			method: "POST",
+			body: JSON.stringify({
+				user_email: mEmail,
+				user_password: mPassword
+			}),
+			// Adding headers to the request
+			headers: {
+				"Content-type": "application/json; charset=UTF-8"
+			}
+		})
+			.then(function (response) {
+				if (!response.ok) {
+					// throw new Error("HTTP error, status = " + response.status);
+					window.alert("Login failed")
+					console.log("HTTP error, status = " + response.status)
+				}
+				return response.json();
+			})
+			.then(function (json) {
+				console.log(json)
+
+				//
+				let result = json.status_code;
+				let result_message = json.status_message;
+				let data_token = json.token_auth;
+
+				if (result == 200) {
+					window.location.replace("aloginwel.php"); //redirect if credentials are correct
+					window.localStorage.setItem("data_token", data_token); //set item to shared preferences to other file
+				}
+
+			})
+			.catch(function (error) {
+				window.alert('Error: ' + error.message);
+
+			});
+	})
+</script>
+
+</html>

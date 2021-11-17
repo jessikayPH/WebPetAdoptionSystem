@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Animal Adoption System</title>
+	<link rel="stylesheet" type="text/css" href="stylelogin.css">
+</head>
+
+<body>
+	<header>
+		<nav>
+			<h1>Animal Adoption System</h1>
+			<ul id="navli">
+				<li><a class="homeblack" href="index.html">HOME</a></li>
+				<li><a class="homered" href="elogin.html">Account Login</a></li>
+				<li><a class="homeblack" href="elogin2.html">Lost & Found</a></li>
+				<li><a class="homeblack" href="alogin.html">Admin Login</a></li>
+
+			</ul>
+		</nav>
+	</header>
+	<div class="divider"></div>
+	<!-- 
+	<div class="loginbox">
+    <img src="assets/avatar.png" class="avatar">
+        <h1>Login Here</h1>
+        <form action="process/eprocess.php" method="POST">
+            <p>Email</p>
+            <input type="text" id="mailuid" name="mailuid" placeholder="Enter Email Address" required="required">
+            <p>Password</p>
+            <input type="password" id="pwd" name="pwd" placeholder="Enter Password" required="required">
+            <input type="submit" name="login-submit" value="Login">
+           
+        </form>
+        
+    </div> -->
+
+	<div class="loginbox">
+		<img src="assets/avatar.png" class="avatar">
+		<h1>Sign Up Here</h1>
+		<form class="form" id="loginForm">
+			<p>Name</p>
+			<input type="text" id="name" name="name" placeholder="Enter Full Name" required="required">
+
+			<p>Contact Number</p>
+			<input type="text" id="number" name="number" placeholder="Enter Contact Number" required="required">
+
+			<p>Address</p>
+			<input type="text" id="address" name="address" placeholder="Enter Address" required="required">
+
+			<p>Email</p>
+			<input type="text" id="email" name="email" placeholder="Enter Email Address" required="required">
+
+			<p>Password</p>
+			<input type="password" id="password" name="password" placeholder="Enter Password" required="required">
+			<input type="submit" name="login-submit" value="Register">
+
+		</form>
+
+	</div>
+
+
+</body>
+
+
+
+
+<script type="text/javascript">
+	// * 6a657373696b61795048 * //
+	//FETCH API METHOD
+	const loginForm = document.getElementById('loginForm');
+
+	loginForm.addEventListener('submit', function (e) {
+		e.preventDefault();
+
+		let mEmail = document.getElementById("email").value
+		let mPassword = document.getElementById("password").value
+		let mName = document.getElementById("name").value
+		let mNumber = document.getElementById("number").value
+		let mAddress = document.getElementById("address").value
+
+		fetch("http://localhost/app_connection/app-connection-p2p/development/crud/register.php", {
+			method: "POST",
+			body: JSON.stringify({
+				user_fullname: mEmail,
+				user_email: mEmail,
+				user_password: mPassword,
+				user_number: mNumber,
+				user_address: mAddress
+			}),
+			// Adding headers to the request
+			headers: {
+				"Content-type": "application/json; charset=UTF-8"
+			}
+		})
+			.then(function (response) {
+				if (!response.ok) {
+					// throw new Error("HTTP error, status = " + response.status);
+					window.alert("Error not able to register account")
+					console.log("HTTP error, status = " + response.status)
+				}
+				return response.json();
+			})
+			.then(function (json) {
+				console.log(json)
+
+				//
+				let result = json.status_code;
+				let result_message = json.status_message;
+				let data_token = json.token_auth;
+
+				if (result == 201) {
+					console.log(data)
+					window.alert('Successfully registered!')
+					window.location.replace("elogin.html");
+				}
+			})
+			.catch(function (error) {
+				window.alert('Error: ' + error.message);
+			});
+	})
+
+
+
+
+</script>
+
+</html>
